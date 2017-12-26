@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    
+    <button>弹出框</button>
+    <script>
+        function Layer(obj){
+            this.obj = obj;
+            this.but=document.getElementsByTagName("button")[0];
+            this.click();
+        }
+        Layer.prototype={
+            constructor:Layer,
+            click:function(){
+                var that = this;
+                //button按钮的点击事件
+                this.but.onclick=function(){
+                    that.createLayer()
+                    that.aleartBox()
+                }
+            },
+            createLayer:function(){
+                //创建一个遮罩层
+                var mark=document.createElement("div")
+                //起名为mark
+                mark.className="mark"
+                //追加到body里
+                document.body.appendChild(mark);
+            },
+            aleartBox:function(){
+                var that=this;
+                //创建一个盒子
+                var box=document.createElement("div")
+                //取名为box
+                box.className="box"
+                //遍历数组添加到box
+                box.innerHTML="<h3>"+this.obj.title+"</h3><h4>"+this.obj.content+"</h4><span>"+this.obj.info[0]+"</span><span>"+this.obj.info[1]+"</span>"
+                //追加到body里
+                document.body.appendChild(box)
+                var spans=document.getElementsByTagName("span")
+                this.box=document.querySelectorAll(".box")[0]
+                //第一个span的点击事件执行确认键的事件
+                spans[0].onclick=function(){
+                    that.obj.logincallback()
+                }
+                //第二个span的点击事件执行取消键的事件
+                spans[1].onclick=function(){
+                    that.obj.zccallback()
+                }
+            }
+        }
+        new Layer({
+            title:"请您先登录",
+            content:"您确定删除吗？",
+            info:["确定","取消"],
+            //点击确定键
+            logincallback:function(){
+                var divs=document.getElementsByTagName("div")
+                //删除节点
+                document.body.removeChild(divs[0])
+                document.body.removeChild(divs[0])
+            },
+            //点击取消键
+            zccallback:function(){
+                var divs=document.getElementsByTagName("div")
+                //隐藏节点
+                divs[0].style.display="none"
+                divs[1].style.display="none"
+            }
+        })
+    </script>
+</body>
+</html>
